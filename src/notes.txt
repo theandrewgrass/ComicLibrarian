@@ -1,0 +1,43 @@
+Models:
+    - Book
+        - title
+        - author
+        - publisher
+        - genre
+        - number pages
+        - actual pages
+        - series url
+        - book url
+    - Page
+        - page url
+        - page dimensions
+        - page number
+
+Controllers:
+    - Get User Query
+    - Get General/Specific Results Using Query
+    - (Get Specific Results With User Decision) -- unless previous query has direct hit
+    - Get Issue/Vol With User Decision
+    - Collect All Links
+    - Download Link Content -- Store As Image Objects
+    - Get Image Details (page number, dimension, etc)
+    - Put Images Into EPub -- Make Sure No Cutoffs -- May have to crop or cut images out or something -- Do some tests
+    - Store All Metadata (ie. title, author, publisher, etc.)
+    - Save it
+    - Clean and return to librarian
+
+Views:
+    - Home
+        - Greetings
+        - Query title 
+    - Results
+        - General Results (no direct matches to query)
+        - Specific Results (single direct match) -- skip right to series view
+        - Series Results (all issues/volumes/etc.)
+    - Download Resource
+        - Getting links
+        - Downloading link content as image
+            - Find away to put directly into PDF/EPub instead of 
+              downloading resource as image then putting image into PDF/EPub
+        - Images compiled to PDF/EPub
+        - Done! (Return Home)
