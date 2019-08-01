@@ -1,4 +1,4 @@
-import Page
+from Page import Page
 
 class Book:
     def __init__(self):

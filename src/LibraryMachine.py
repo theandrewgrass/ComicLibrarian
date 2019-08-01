@@ -1,5 +1,5 @@
 from Browser import Browser
-import StringResource
+from StringResource import WebElements
 
 
 class LibraryMachine:
@@ -8,7 +8,7 @@ class LibraryMachine:
         self.results = None
 
     def boot_catalogue(self):
-        self.browser.navigate_to_url(StringResource.WebElements.site_url)
+        self.browser.navigate_to_url(WebElements.site_url)
 
     def search_for_item_in_catalogue(self, requested_item):
         self.browser.search_for_item_using_form(requested_item)

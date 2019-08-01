@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import os
 import re
 
-import StringResource
+from StringResource import WebElements
 
 
 class Browser:
@@ -16,11 +16,11 @@ class Browser:
         self.driver = self.setup_driver()
 
     def setup_driver(self):
-        path_to_chrome_driver = r'"C:\Users\Dunkr\AppData\Local\Programs\Python\Python36-32\Scripts\chromedriver.exe"'
+        path_to_chrome_driver = r'"C:\Users\agrass\AppData\Local\Programs\Python\Python37-32\Scripts\chromedriver.exe"'
         os.environ["webdriver.chrome.driver"] = path_to_chrome_driver
-        path_to_ad_block = r'D:\Programming\Python\ScrapingComics\1.16.4_0'
+        #path_to_ad_block = r'D:\Programming\Python\ScrapingComics\1.16.4_0'
         chrome_options = Options()
-        chrome_options.add_argument(f'load-extension={path_to_ad_block}')
+        #chrome_options.add_argument(f'load-extension={path_to_ad_block}')
         chrome_options.add_argument('--headless')
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
@@ -40,11 +40,11 @@ class Browser:
     def wait_for_search_form(self):
         timeout = 10  # seconds
         wait = WebDriverWait(self.driver, timeout)
-        wait.until(EC.presence_of_element_located((By.ID, StringResource.WebElements.search_form_id)))
+        wait.until(EC.presence_of_element_located((By.ID, WebElements.search_form_id)))
 
     # may have to add try catch depending on types of exceptions
     def find_search_form(self):
-        search_form = self.driver.find_element_by_id(StringResource.WebElements.search_form_id)
+        search_form = self.driver.find_element_by_id(WebElements.search_form_id)
         search_form.click()
         search_form.clear()
 
@@ -57,7 +57,7 @@ class Browser:
         return results
 
     def extract_results_from_html(self, html):
-        title_element_filter = SoupStrainer(StringResource.WebElements.filter_tag)
+        title_element_filter = SoupStrainer(WebElements.filter_tag)
         filtered_html = BeautifulSoup(html, "lxml", parse_only=title_element_filter)
         filtered_elements = []
 
@@ -73,12 +73,12 @@ class Browser:
 
     def find_issues_given_title(self, title):
         url_formatted_title = self.format_content_for_url(title)
-        base_url = StringResource.WebElements.site_url
+        base_url = WebElements.site_url
         self.navigate_to_url(f'{base_url}/Comic/{url_formatted_title}')
         self.wait_for_issues()
 
     def format_content_for_url(self, content):
-        for char in StringResource.WebElements.unwanted_chars:
+        for char in WebElements.unwanted_chars:
             content = content.replace(char, '-')
 
         while content.endswith('-'):
@@ -94,7 +94,7 @@ class Browser:
     def wait_for_issues(self):
         timeout = 10
         wait = WebDriverWait(self.driver, timeout)
-        wait.until(EC.presence_of_element_located((By.CLASS_NAME, StringResource.WebElements.issues_class)))
+        wait.until(EC.presence_of_element_located((By.CLASS_NAME, WebElements.issues_class)))
 
     def close_browser(self):
         self.driver.close()
