@@ -16,7 +16,7 @@ class Browser:
         self.driver = self.setup_driver()
 
     def setup_driver(self):
-        path_to_chrome_driver = r'"C:\Users\agrass\AppData\Local\Programs\Python\Python37-32\Scripts\chromedriver.exe"'
+        path_to_chrome_driver = os.path.abspath(r'..\chromedriver\chromedriver.exe')
         os.environ["webdriver.chrome.driver"] = path_to_chrome_driver
         #path_to_ad_block = r'D:\Programming\Python\ScrapingComics\1.16.4_0'
         chrome_options = Options()
