@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import os
 import re
 
-from StringResource import WebElements
+from StringResource import WebElements, FormattingStrings
 from Extractor import ResultExtractor, MetadataExtractor
 
 
@@ -59,19 +59,19 @@ class Browser:
     def go_to_title_page(self, title):
         url_formatted_title = self.format_content_for_url(title)
         base_url = WebElements.site_url
-        self.navigate_to_url(f'{base_url}/Comic/{url_formatted_title}')
+        self.navigate_to_url(f'{base_url}/{WebElements.comic_sub_url}/{url_formatted_title}')
 
     def format_content_for_url(self, content):
-        for char in WebElements.unwanted_chars:
-            content = content.replace(char, '-')
+        for char in FormattingStrings.unwanted_chars:
+            content = content.replace(char, FormattingStrings.dash_string)
 
-        while content.endswith('-'):
+        while content.endswith(FormattingStrings.dash_string):
             content = content[:-1]
 
-        while content.startswith('-'):
+        while content.startswith(FormattingStrings.dash_string):
             content = content[1:]
 
-        content = re.sub('--+', '-', content)
+        content = re.sub(FormattingStrings.repeated_dashes, FormattingStrings.dash_string, content)
 
         return content
 

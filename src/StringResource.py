@@ -15,10 +15,38 @@ class ProgressUpdateStrings:
     search_item = "Searching for titles similar to {item}..."
     open_title = "Opening the title page for {title}..."
 
+
 class WebElements:
     site_url = "https://readcomiconline.to"
+    comic_sub_url = "/Comic/"
     search_form_id = "keyword"
     content_filter_tag = "tr"
     issues_class = "listing"
-    unwanted_chars = [' ', ',', '.', '?', '!', ':', ';', ')', '(', '\'', '/', '"', '#', '_', '+']
     book_metadata_class = "barContent"
+    metadata_type_class = "info"
+    div_tag = "div"
+    a_tag = "a"
+    p_tag = "p"
+    span_tag = "span"
+    class_attribute = "class"
+    lxml_string = "lxml"
+    multi_value_class = "dotUnder"
+
+
+class FormattingStrings:
+    nb_space = "&nbsp;"
+    repeated_spaces = "\s\s+"
+    repeated_dashes = "--+"
+    space_string = " "
+    colon_string = ":"
+    dash_string = "-"
+    unwanted_chars = [' ', ',', '.', '?', '!', ':', ';', ')', '(', '\'', '/', '"', '#', '_', '+']
+
+
+class MetadataElements:
+    genres = "Genres"
+    writer = "Writer"
+    artist = "Artist"
+    publisher = "Publisher"
+    publication_date = "PublicationDate"
+    summary = "Summary"
