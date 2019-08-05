@@ -1,9 +1,13 @@
 from Librarian import Librarian
 
-comic_librarian = Librarian()
-search_request = comic_librarian.get_search_request()
-comic_librarian.search_for_items_similar_to_requested_item(search_request)
-comic_librarian.report_results()
-title_request = comic_librarian.get_title_request()
-comic_librarian.find_issues_given_title_index(title_request)
-comic_librarian.report_results()
+try:
+    comic_librarian = Librarian()
+    search_request = comic_librarian.get_search_request()
+    comic_librarian.find_requested_item(search_request)
+    title_request = comic_librarian.get_title_request()
+    comic_librarian.go_to_title_page()
+    comic_librarian.build_book_metadata()
+    comic_librarian.find_available_issues()
+    issue_request = comic_librarian.get_issue_request()
+finally:
+    comic_librarian.browser.close_browser()

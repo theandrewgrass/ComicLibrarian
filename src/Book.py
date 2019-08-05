@@ -1,22 +1,24 @@
 from Page import Page
 
+
 class Book:
     def __init__(self):
-        self.bookDetails = {
-            "title": None,
-            "author": None,
-            "publisher": None,
-            "genre": None,
-            "numberPages": None, # integer
-            "pages": None, # list of Pages
-            "seriesUrl": None,
-            "bookUrl": None
-        }
-    
-    '''
-    '   Takes a book detail (ie. title, author, etc.)
-    '   This probably goes in a controller
-    '''
-    def SetBookDetails(self, detail):
-        for key, value in detail.items():
-            self.bookDetails.update({key: value})
+        self.Title = None  # regular title
+        self.OtherName = None  # other names -- if any?
+        self.Issue = None
+        self.Writer = []
+        self.Artist = []
+        self.Publisher = None
+        self.Genres = []
+        self.PublicationDate = None
+        self.Status = None  # Complete/incomplete -- is the series ongoing
+        self.Summary = None
+        self.NumberPages = None
+        self.Pages = []
+        # debate whether to keep these... can be derived
+        self.BookUrl = None
+        self.IssueUrl = None
+
+    def to_string(self):
+        for prop, value in book.__dict__.items():
+            print(f'{prop}: {value}')

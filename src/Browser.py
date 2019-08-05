@@ -9,11 +9,13 @@ import os
 import re
 
 from StringResource import WebElements
+from Extractor import ResultExtractor, MetadataExtractor
 
 
 class Browser:
     def __init__(self):
         self.driver = self.setup_driver()
+        self.results = None
 
     def setup_driver(self):
         path_to_chrome_driver = os.path.abspath(r'..\chromedriver\chromedriver.exe')
@@ -50,32 +52,14 @@ class Browser:
 
         return search_form
 
-    def get_results(self):
+    def record_results(self):
         html = self.driver.page_source
-        results = self.extract_results_from_html(html)
+        self.results = ResultExtractor().extract_available_content_from_html(html)
 
-        return results
-
-    def extract_results_from_html(self, html):
-        title_element_filter = SoupStrainer(WebElements.filter_tag)
-        filtered_html = BeautifulSoup(html, "lxml", parse_only=title_element_filter)
-        filtered_elements = []
-
-        for filtered_element in filtered_html:
-            try:
-                filtered_elements.append(filtered_element.find('a').get_text())
-            except AttributeError:
-                pass
-
-        results = [" ".join(html_result.split()) for html_result in filtered_elements]
-
-        return results
-
-    def find_issues_given_title(self, title):
+    def go_to_title_page(self, title):
         url_formatted_title = self.format_content_for_url(title)
         base_url = WebElements.site_url
         self.navigate_to_url(f'{base_url}/Comic/{url_formatted_title}')
-        self.wait_for_issues()
 
     def format_content_for_url(self, content):
         for char in WebElements.unwanted_chars:
@@ -91,12 +75,29 @@ class Browser:
 
         return content
 
+    def get_book_metadata(self):
+        self.wait_for_metadata()
+        html = self.driver.page_source
+        book_metadata = MetadataExtractor().extract_book_metadata_from_html(html)
+
+        return book_metadata
+
+    def get_issues(self):
+        self.wait_for_issues()
+        self.record_results()
+
+    def wait_for_metadata(self):
+        timeout = 10
+        wait = WebDriverWait(self.driver, timeout)
+        wait.until(EC.presence_of_element_located((By.CLASS_NAME, WebElements.book_metadata_class)))
+
     def wait_for_issues(self):
         timeout = 10
         wait = WebDriverWait(self.driver, timeout)
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, WebElements.issues_class)))
 
     def close_browser(self):
+        print("browser closing")
         self.driver.close()
         self.driver.quit()
 
