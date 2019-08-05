@@ -14,11 +14,12 @@ class ProgressUpdateStrings:
     boot_catalogue = "Booting up the catalogue..."
     search_item = "Searching for titles similar to {item}..."
     open_title = "Opening the title page for {title}..."
+    open_issue = "Opening the page for {issue} from the title, {title}..."
 
 
 class WebElements:
     site_url = "https://readcomiconline.to"
-    comic_sub_url = "/Comic/"
+    comic_sub_url = "Comic"
     search_form_id = "keyword"
     content_filter_tag = "tr"
     issues_class = "listing"

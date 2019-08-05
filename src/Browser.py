@@ -23,7 +23,7 @@ class Browser:
         #path_to_ad_block = r'D:\Programming\Python\ScrapingComics\1.16.4_0'
         chrome_options = Options()
         #chrome_options.add_argument(f'load-extension={path_to_ad_block}')
-        chrome_options.add_argument('--headless')
+        #chrome_options.add_argument('--headless')
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
         args = ["hide_console", ]
@@ -32,6 +32,7 @@ class Browser:
         return driver
 
     def navigate_to_url(self, url):
+        print(f'Navigating to {url}...')
         self.driver.get(url)
 
     def search_for_item_using_form(self, item):
@@ -95,6 +96,13 @@ class Browser:
         timeout = 10
         wait = WebDriverWait(self.driver, timeout)
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, WebElements.issues_class)))
+
+    def go_to_issue_page(self, title, issue):
+        url_formatted_title = self.format_content_for_url(title)
+        url_formatted_issue = self.format_content_for_url(issue)
+        base_url = WebElements.site_url
+
+        self.navigate_to_url(f'{base_url}/{WebElements.comic_sub_url}/{url_formatted_title}/{url_formatted_issue}')
 
     def close_browser(self):
         print("browser closing")

@@ -1,7 +1,6 @@
 from StringResource import UserStrings, ProgressUpdateStrings, WebElements
-from LibraryMachine import LibraryMachine
 from Book import Book
-from Extractor import MetadataExtractor
+from Extractor import MetadataExtractor, ResultExtractor
 from Browser import Browser
 
 
@@ -61,8 +60,8 @@ class Librarian:
             print("\n")
 
     def get_title_request(self):
-        titleIndex = int(input(UserStrings.which_title))
-        self.book.Title = self.browser.results[titleIndex-1]
+        title_index = int(input(UserStrings.which_title))
+        self.book.Title = ResultExtractor().extract_title_from_results(self.browser.results, title_index)
 
     def go_to_title_page(self):
         title = self.book.Title
@@ -85,5 +84,11 @@ class Librarian:
         self.report_results(self.browser.results)
 
     def get_issue_request(self):
-        issue_request = int(input(UserStrings.which_issue))
-        return issue_request
+        issue_index = int(input(UserStrings.which_issue))
+        self.book.Issue = ResultExtractor().extract_issue_from_results(self.browser.results, issue_index, self.book.Title)
+
+    def go_to_issue_page(self):
+        title = self.book.Title
+        issue = self.book.Issue
+        print(ProgressUpdateStrings.open_issue.format(title=title, issue=issue))
+        self.browser.go_to_issue_page(title, issue)
