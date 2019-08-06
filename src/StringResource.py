@@ -32,7 +32,14 @@ class WebElements:
     class_attribute = "class"
     lxml_string = "lxml"
     multi_value_class = "dotUnder"
-
+    high_quality = "hq"
+    all_pages_read_type = "1"
+    issue_url = f'{site_url}/{comic_sub_url}/{("{title}/{issue}?quality={quality}&readType={read_type}")}'
+    image_selector = "#divImage > p > img"
+    img_tag = "img"
+    rel_attribute = "rel"
+    no_referrer_value = "noreferrer"
+    src_attribute = "src"
 
 class FormattingStrings:
     nb_space = "&nbsp;"

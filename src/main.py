@@ -10,5 +10,6 @@ try:
     comic_librarian.find_available_issues()
     issue_request = comic_librarian.get_issue_request()
     comic_librarian.go_to_issue_page()
+    comic_librarian.get_images()
 finally:
     comic_librarian.browser.close_browser()

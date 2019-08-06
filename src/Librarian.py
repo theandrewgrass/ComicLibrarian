@@ -92,3 +92,6 @@ class Librarian:
         issue = self.book.Issue
         print(ProgressUpdateStrings.open_issue.format(title=title, issue=issue))
         self.browser.go_to_issue_page(title, issue)
+
+    def get_images(self):
+        self.browser.get_images()

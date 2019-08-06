@@ -70,3 +70,16 @@ class MetadataExtractor:
             book_metadata.update({metadata_type: metadata})
 
         return book_metadata
+
+class ImageExtractor:
+    def extract_image_urls_from_html(self, html):
+        image_elements_filter = SoupStrainer(WebElements.img_tag, {WebElements.rel_attribute: WebElements.no_referrer_value})
+        filtered_html = BeautifulSoup(html, WebElements.lxml_string, parse_only=image_elements_filter)
+
+        image_urls = [image_element[WebElements.src_attribute] for image_element in filtered_html.find_all(WebElements.img_tag)]
+
+        print(f'{len(image_urls)} urls were found:')
+        for url in image_urls:
+            print(url)
+
+        return image_urls

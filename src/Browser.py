@@ -9,7 +9,7 @@ import os
 import re
 
 from StringResource import WebElements, FormattingStrings
-from Extractor import ResultExtractor, MetadataExtractor
+from Extractor import ResultExtractor, MetadataExtractor, ImageExtractor
 
 
 class Browser:
@@ -23,7 +23,7 @@ class Browser:
         #path_to_ad_block = r'D:\Programming\Python\ScrapingComics\1.16.4_0'
         chrome_options = Options()
         #chrome_options.add_argument(f'load-extension={path_to_ad_block}')
-        #chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--headless')
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
         args = ["hide_console", ]
@@ -97,12 +97,29 @@ class Browser:
         wait = WebDriverWait(self.driver, timeout)
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, WebElements.issues_class)))
 
+    def get_images(self):
+        self.wait_for_images()
+        html = self.driver.page_source
+        image_urls = ImageExtractor().extract_image_urls_from_html(html)
+
+    def wait_for_images(self):
+        timeout = 10
+        wait = WebDriverWait(self.driver, timeout)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, WebElements.image_selector)))
+
     def go_to_issue_page(self, title, issue):
         url_formatted_title = self.format_content_for_url(title)
         url_formatted_issue = self.format_content_for_url(issue)
-        base_url = WebElements.site_url
 
-        self.navigate_to_url(f'{base_url}/{WebElements.comic_sub_url}/{url_formatted_title}/{url_formatted_issue}')
+        # Consider getting quality from a config file of some sort
+        full_url = WebElements.issue_url.format(
+            title=url_formatted_title,
+            issue=url_formatted_issue,
+            quality=WebElements.high_quality,
+            read_type=WebElements.all_pages_read_type
+        )
+
+        self.navigate_to_url(full_url)
 
     def close_browser(self):
         print("browser closing")
