@@ -16,6 +16,12 @@ class ImageDownloader:
 
         self.file_path = comics_folder
 
-    def download_image_as_byes(self, url):
+    def download_image_as_bytes(self, url):
         response = requests.get(url)
-        img = Image.open(BytesIo(response.content))
+        try:
+            img = Image.open(BytesIO(response.content))
+        except IOError:
+            print(f'There was an error with getting the image at the following url:\n\t{url}')
+            img = None
+
+        return img

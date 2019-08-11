@@ -15,6 +15,9 @@ class ProgressUpdateStrings:
     search_item = "Searching for titles similar to {item}..."
     open_title = "Opening the title page for {title}..."
     open_issue = "Opening the page for {issue} from the title, {title}..."
+    get_metadata = "Getting the comic's metadata..."
+    get_content = "Getting the issue's content..."
+    show_book = "Here is the comic that's been built:"
 
 
 class WebElements:

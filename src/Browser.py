@@ -10,12 +10,16 @@ import re
 
 from StringResource import WebElements, FormattingStrings
 from Extractor import ResultExtractor, MetadataExtractor, ImageExtractor
+from ImageDownloader import ImageDownloader
 
 
 class Browser:
     def __init__(self):
         self.driver = self.setup_driver()
-        self.results = None
+        self.results = {
+            "search_results": None,
+            "issue_results": None
+        }
 
     def setup_driver(self):
         path_to_chrome_driver = os.path.abspath(r'..\chromedriver\chromedriver.exe')
@@ -39,6 +43,7 @@ class Browser:
         self.wait_for_search_form()
         form = self.find_search_form()
         form.send_keys(f'{item}{Keys.RETURN}')
+        self.record_results("search_results")
 
     def wait_for_search_form(self):
         timeout = 10  # seconds
@@ -53,9 +58,12 @@ class Browser:
 
         return search_form
 
-    def record_results(self):
+    def record_results(self, results_type):
         html = self.driver.page_source
-        self.results = ResultExtractor().extract_available_content_from_html(html)
+        self.results[results_type] = ResultExtractor().extract_available_content_from_html(html)
+
+    def get_results(self, results_type):
+        return self.results[results_type]
 
     def go_to_title_page(self, title):
         url_formatted_title = self.format_content_for_url(title)
@@ -85,7 +93,7 @@ class Browser:
 
     def get_issues(self):
         self.wait_for_issues()
-        self.record_results()
+        self.record_results("issue_results")
 
     def wait_for_metadata(self):
         timeout = 10
@@ -101,6 +109,10 @@ class Browser:
         self.wait_for_images()
         html = self.driver.page_source
         image_urls = ImageExtractor().extract_image_urls_from_html(html)
+
+        images = [ImageDownloader().download_image_as_bytes(image_url) for image_url in image_urls]
+
+        return images
 
     def wait_for_images(self):
         timeout = 10
