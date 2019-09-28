@@ -1,3 +1,5 @@
+import re
+
 class UserStrings:
     greetings = "Greetings form the Comic Librarian!"
     what_to_search = "What do you want to search for? "
@@ -53,6 +55,19 @@ class FormattingStrings:
     dash_string = "-"
     unwanted_chars = [' ', ',', '.', '?', '!', ':', ';', ')', '(', '\'', '/', '"', '#', '_', '+']
 
+    def format_content_for_url(self, content):
+        for char in self.unwanted_chars:
+            content = content.replace(char, self.dash_string)
+
+        while content.endswith(self.dash_string):
+            content = content[:-1]
+
+        while content.startswith(self.dash_string):
+            content = content[1:]
+
+        content = re.sub(self.repeated_dashes, self.dash_string, content)
+
+        return content
 
 class MetadataElements:
     genres = "Genres"

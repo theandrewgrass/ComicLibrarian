@@ -96,3 +96,5 @@ class Librarian:
 
         print(ProgressUpdateStrings.show_book)
         self.book_factory.show_book()
+        
+        self.book_factory.build_book()

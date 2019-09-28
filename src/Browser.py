@@ -6,7 +6,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup, SoupStrainer
 import os
-import re
 
 from StringResource import WebElements, FormattingStrings
 from Extractor import ResultExtractor, MetadataExtractor, ImageExtractor
@@ -28,6 +27,7 @@ class Browser:
         chrome_options = Options()
         #chrome_options.add_argument(f'load-extension={path_to_ad_block}')
         chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--incognito')
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
         args = ["hide_console", ]
@@ -66,23 +66,9 @@ class Browser:
         return self.results[results_type]
 
     def go_to_title_page(self, title):
-        url_formatted_title = self.format_content_for_url(title)
+        url_formatted_title = FormattingStrings().format_content_for_url(title)
         base_url = WebElements.site_url
         self.navigate_to_url(f'{base_url}/{WebElements.comic_sub_url}/{url_formatted_title}')
-
-    def format_content_for_url(self, content):
-        for char in FormattingStrings.unwanted_chars:
-            content = content.replace(char, FormattingStrings.dash_string)
-
-        while content.endswith(FormattingStrings.dash_string):
-            content = content[:-1]
-
-        while content.startswith(FormattingStrings.dash_string):
-            content = content[1:]
-
-        content = re.sub(FormattingStrings.repeated_dashes, FormattingStrings.dash_string, content)
-
-        return content
 
     def get_book_metadata(self):
         self.wait_for_metadata()
@@ -120,8 +106,8 @@ class Browser:
         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, WebElements.image_selector)))
 
     def go_to_issue_page(self, title, issue):
-        url_formatted_title = self.format_content_for_url(title)
-        url_formatted_issue = self.format_content_for_url(issue)
+        url_formatted_title = FormattingStrings().format_content_for_url(title)
+        url_formatted_issue = FormattingStrings().format_content_for_url(issue)
 
         # Consider getting quality from a config file of some sort
         full_url = WebElements.issue_url.format(

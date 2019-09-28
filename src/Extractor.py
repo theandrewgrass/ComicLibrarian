@@ -28,7 +28,7 @@ class ResultExtractor:
         return title
 
     def extract_issue_from_results(self, results, issue_index, title):
-        issue = results[issue_index-1].split(title)[1]
+        issue = results[issue_index-1].split(title)[1].replace(' ', '')
         return issue
 
 
